@@ -26,9 +26,9 @@ driver.maximize_window() # max
 driver.set_window_position(0, 0)
 driver.set_window_size(1920, 1060)
 driver.get("https://sso.techdata.com/as/authorization.oauth2?client_id=shop_ca_client&response_type=code&redirect_uri=https://shop.techdata.ca/oauth&pfidpadapterid=ShieldBaseAuthnAdaptor")
-driver.find_element_by_id('username').send_keys('777817')
-driver.find_element_by_id('password').send_keys('LeoDes11!!')
-driver.find_element_by_id('submitButton').click()
+driver.find_element('username').send_keys('785112')
+driver.find_element('password').send_keys('LeoLeo611!')
+driver.find_element('submitButton').click()
 time.sleep(5)
 time.sleep(5)
 print("done waiting for login")
@@ -39,9 +39,9 @@ def scrape_me(product_key, product_data):
     original_url = "https://shop.techdata.ca/products/"+product_code+"/?P="+product_code
     print('getting '+original_url)
     driver.get(original_url)
-    product_title = driver.find_element_by_class_name('productTitle').get_attribute('textContent')
-    product_description = driver.find_element_by_id('prodDescription').get_attribute('textContent').strip()
-    driver.find_element_by_id('specsTab').click()
+    product_title = driver.find_element('productTitle').get_attribute('textContent')
+    product_description = driver.find_element('prodDescription').get_attribute('textContent').strip()
+    driver.find_element('specsTab').click()
     time.sleep(3)
 
     try:
@@ -49,7 +49,7 @@ def scrape_me(product_key, product_data):
     except:
         print("dir already exists")
 
-    specs = driver.find_elements_by_css_selector('.extSpecsTable-detail tr')
+    specs = driver.find_elements('.extSpecsTable-detail tr')
     specs_to_add = {}
     for spec_element in specs:
         spec_cells = spec_element.find_elements_by_css_selector('td')
@@ -60,7 +60,7 @@ def scrape_me(product_key, product_data):
         })
     time.sleep(1)
 
-    features = driver.find_elements_by_css_selector('.ccs-cc-inline-feature')
+    features = driver.find_elements('.ccs-cc-inline-feature')
     features_to_add = {}
     feature_number = 0
     print("getting features")
@@ -94,7 +94,7 @@ def scrape_me(product_key, product_data):
             #no features present
             pass
         print('found feature...')
-    image_elements = driver.find_elements_by_css_selector('.bxslider img')
+    image_elements = driver.find_elements('.bxslider img')
 
     images = []
     for image in image_elements:
