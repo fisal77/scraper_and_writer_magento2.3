@@ -3,7 +3,7 @@ from dbfread import DBF
 
 class ItemsRepository:
     def __init__(self):
-        f = open("data"+os.sep+"current_products.txt")
+        f = open("current_products.txt")
         self.data = f.read().splitlines()
         f.close()
 
@@ -14,7 +14,7 @@ class ItemsRepository:
         return False
 
     def save_product(self, product_data):
-        filename = "pack/data/"+product_data.get('part_number')+"/en_info.json"
+        filename = "data" + os.sep + product_data.get('part_number') + os.sep + "en_info.json"
         print('saving product data', product_data)
         with codecs.open(filename, "w+", encoding='utf-8') as outfile:
             json.dump(product_data, outfile, ensure_ascii=False)

@@ -22,8 +22,8 @@ for item_f in item_folders:
 
         print("doing item "+str(i))
         createDateTime = datetime.datetime.now()
-        json_data_file = item_f+os.sep+"en_info.json"
-        json_data = json.load (open(json_data_file, encoding='utf-8'))
+        json_data_file = item_f + os.sep + "en_info.json"
+        json_data = json.load(open(json_data_file, encoding='utf-8'))
         name = json_data.get('title').strip()
         images = json_data.get('images')
 
