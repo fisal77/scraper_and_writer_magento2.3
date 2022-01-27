@@ -170,4 +170,4 @@ for product_key, product_data in products_loader.products.items():
         except:
             print('failed 2 times, skipping '+ product_data.get('part_number'))
 
-SaveToCsvTable.SaveToCsvTable.write_to_csv()
+SaveToCsvTable.write_to_csv()
