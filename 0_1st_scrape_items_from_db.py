@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time, requests, os, sys
+import SaveToCsvTable
 
 products_loader = ProductsFileLoader.ProductsFileLoader()
 products_loader.initalize()
@@ -36,6 +37,7 @@ driver.find_element(By.ID, 'submitButton').click()
 time.sleep(5)
 time.sleep(5)
 print("done waiting for login")
+
 
 def scrape_me(product_key, product_data):
     product_data_copy = product_data
@@ -70,6 +72,8 @@ def scrape_me(product_key, product_data):
     print("Specs done!")
     time.sleep(1)
 
+    images = []
+
     features_to_add = {}
     try:
         print("getting features...")
@@ -86,21 +90,24 @@ def scrape_me(product_key, product_data):
                 feature_thumb_url = feature_thumb_element.get_attribute('src')
                 feature_text = feature_element.find_element(By.CSS_SELECTOR, '.ccs-cc-inline-feature-description').get_attribute('textContent').strip()
 
-                response = requests.get(feature_image_url)
-                if response.status_code == 200:
-                    with open(feature_image_save_path+"/feature_"+str(feature_number)+".jpg", 'wb') as f:
-                        f.write(response.content)
-
-                response = requests.get(feature_thumb_url)
-                if response.status_code == 200:
-                    with open(feature_image_save_path+"/feature_thumb_"+str(feature_number)+".jpg", 'wb') as f:
-                        f.write(response.content)
+                # Uncomment the below code if want save image file
+                # response = requests.get(feature_image_url)
+                # if response.status_code == 200:
+                #     with open(feature_image_save_path+"/feature_"+str(feature_number)+".jpg", 'wb') as f:
+                #         f.write(response.content)
+                #
+                # response = requests.get(feature_thumb_url)
+                # if response.status_code == 200:
+                #     with open(feature_image_save_path+"/feature_thumb_"+str(feature_number)+".jpg", 'wb') as f:
+                #         f.write(response.content)
 
                 features_to_add.update({
                     'text': feature_text,
                     'image': "feature_"+str(feature_number)+".jpg",
                     'thumb': "feature_thumb_"+str(feature_number)+".jpg"
                 })
+                images.append(feature_image_url)
+                images.append(feature_thumb_url)
                 print('Found feature...')
             except:
                 #no features present
@@ -111,25 +118,28 @@ def scrape_me(product_key, product_data):
         print('No found feature...')
         pass
 
-    images = []
+
     print('Start found images...')
-    image_elements = driver.find_elements(By.CLASS_NAME, 'bxslider')
-    for image in image_elements:
-        image_url = image.find_element(By.TAG_NAME, 'img').get_attribute('src')
-        if "?timestamp=" in image_url:
-            image_url = image_url.split("?timestamp=")[0]
+    image_elements = driver.find_elements(By.CSS_SELECTOR, '#productDetail > div.left > div.productImages > div > div > ul > li')
+    for image_url in image_elements:
+        single_image_url = image_url.find_element(By.TAG_NAME, 'img').get_attribute('src')
+        print(single_image_url)
 
-        image_file = os.path.basename(image_url)
+        if single_image_url.find("?timestamp="):
+            single_image_url = single_image_url.split("?timestamp=")[0]
 
-        if image_file in images:
-            continue
+        # Uncomment the below code if want save image file only
+        # image_file = os.path.basename(single_image_url)
+        # image_save_path = "data/" + product_data.get('part_number') + "/" + image_file
+        # response = requests.get(single_image_url)
+        # if response.status_code == 200:
+        #     with open(image_save_path, 'wb') as f:
+        #         f.write(response.content)
+        #         images.append(image_file)
 
-        image_save_path = "data/" + product_data.get('part_number') + "/" + image_file
-        response = requests.get(image_url)
-        if response.status_code == 200:
-            with open(image_save_path, 'wb') as f:
-                f.write(response.content)
-                images.append(image_file)
+        # comment this if no need to image url only
+        images.append(single_image_url)
+
     print('End found images...')
 
     product_data_copy.update({
@@ -159,3 +169,5 @@ for product_key, product_data in products_loader.products.items():
             scrape_me(product_key, product_data)
         except:
             print('failed 2 times, skipping '+ product_data.get('part_number'))
+
+SaveToCsvTable.SaveToCsvTable.write_to_csv()
