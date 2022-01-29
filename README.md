@@ -11,3 +11,8 @@ Python Web Scraper by Selenium library, Import product details from external web
 3 - After finished scraping all product details (For testing here are 5 products only and I interrupt it to run next script "SaveToCsvTable.py") this uses output from previous script, reads data files and prepares product details, html etc. and then produces csv table file used for Magento2 products importer to store front website.
 
 4 - After scrapped data successfully for products into results_latest.csv table file, then import it to Magento2 storefront (importer) and you will see the new products with category.
+
+
+For more details you cans see this explain video as testing:
+
+https://youtu.be/rHoG7a0RhAw
