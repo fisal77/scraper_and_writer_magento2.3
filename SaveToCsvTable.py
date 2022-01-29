@@ -10,8 +10,9 @@ import datetime
 
 def write_to_csv():
     """
-    this uses output from previous script, reads data files and prepares html etc. and then produces csv file to
-    update for running from cron setup full path on server below
+    After finished scraping all product details (For testing here are 5 products only, and I interrupt it to run next
+    script "SaveToCsvTable.py") this uses output from previous script, reads data files and prepares product details,
+    html etc. and then produces csv table file used for Magento2 products importer to storefront website.
     """
     # setup full path on server here
     print("reading products folders...")
