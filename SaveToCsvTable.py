@@ -98,7 +98,7 @@ def write_to_csv():
                 data_to_write.update({'updated_at': createDateTime})
                 data_to_write.update({'quantity': json_data.get('quantity')})
                 data_to_write.update({'qty': json_data.get('quantity')})
-                data_to_write.update({'is_in_stock': '1'})
+                data_to_write.update({'is_in_stock': 1})
                 data_to_write.update({'visibility': 'Catalog, Search'})
                 print(data_to_write)
 
@@ -106,14 +106,14 @@ def write_to_csv():
                 ### write columns
                 if i == 1:
                     with codecs.open('results_latest.csv', 'w+', encoding='utf-8') as f:
-                        w = csv.writer(f, quoting=csv.QUOTE_ALL)
+                        w = csv.writer(f, quoting=csv.QUOTE_NONE)
                         w.writerow(data_to_write.keys())
                     with codecs.open('errors.log', 'w+', encoding='utf-8') as f:
-                        w = csv.writer(f, quoting=csv.QUOTE_ALL)
+                        w = csv.writer(f, quoting=csv.QUOTE_NONE)
                         w.writerow(data_to_write.keys())
 
                 with codecs.open('results_latest.csv', 'a+', encoding='utf-8') as f:
-                    w = csv.writer(f, quoting=csv.QUOTE_ALL)
+                    w = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
                     w.writerow(data_to_write.values())
         except Exception as e:
             print('got except on ',e)
