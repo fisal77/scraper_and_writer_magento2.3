@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time, requests, os, sys
 import SaveToCsvTable
+from random import shuffle
 
 products_loader = ProductsFileLoader.ProductsFileLoader()
 products_loader.initalize()
@@ -140,6 +141,9 @@ def scrape_me(product_key, product_data):
         # comment this if no need to image url only
         images.append(single_image_url)
 
+    print('Images before re-sort: ' + str(images))
+    shuffle(images)
+    print('Images after re-sort: ' + str(images))
     print('End found images...')
 
     product_data_copy.update({
